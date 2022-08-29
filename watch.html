@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Watch for you</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="blockquote-wrapper">
+            <div class="blockquote">
+                <h1>{{ timeStr }}</h1>
+                <h4>{{ dataStr }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var data = { polling: null, dataStr: '', timeStr: '' };
+        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        var vm = new Vue({
+            el: '#app',
+            data: data,
+            methods: {
+                currentTime() {
+                    const current = new Date();
+                    const time = (current.getHours() < 10 ? '0': '') + current.getHours() + " : " + (current.getMinutes() < 10 ? '0': '') + current.getMinutes();
+                    return time;
+                },
+                currentDate() {
+                    const current = new Date();
+                    const date = monthNames[current.getMonth()];
+                    return date;
+                },
+                changeQuote() {
+                    this.polling = setInterval(() => {
+                        this.dataStr = this.currentDate();
+                        this.timeStr = this.currentTime();
+                    }, 2000);
+                }
+            },
+            created() {
+                this.changeQuote();
+            },
+            mounted() {},
+            beforeDestroy() {
+                clearInterval(this.polling);
+            }
+        })
+    </script>
+</body>
+
+</html>
