@@ -5,6 +5,15 @@ body {
     background-size: 100%;
 }
 
+/* For any viewports less than 1000px wide */
+@media (max-width: 1000px) {
+
+    body {
+        background-size: 1920px; /* Force the image to its minimum width */
+    }
+
+}
+
 /* center the blockquote in the page */
 .blockquote-wrapper {
     display: flex;
