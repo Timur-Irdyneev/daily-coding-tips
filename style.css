@@ -1,0 +1,89 @@
+/* dark background */
+body {
+    background: #191A1B;
+    background-image: url("https://images.freeimages.com/images/large-previews/fdc/swiss-mountains-1362968.jpg");
+}
+
+/* center the blockquote in the page */
+.blockquote-wrapper {
+    display: flex;
+    height: 94vh;
+}
+
+/* Blockquote main style */
+.blockquote {
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    padding: 2px;
+    width: 100%;
+    max-width: 800px;
+    opacity: 94%;
+    z-index: 1;
+    margin: auto;
+}
+
+/* Blockquote background */
+.blockquote::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #ff0000;
+    background-image: linear-gradient(45deg, #ff0000 0%, #FFFFFF 24%, #6284FF 49%, #FF0000 75%, #ffffff 100%);
+
+    background-size: 400% 400%;
+    animation: gradientborders 8s ease infinite;
+}
+
+/* Blockquote background animation */
+@keyframes gradientborders {
+    0% {
+        background-position: 0% 25%
+    }
+
+    50% {
+        background-position: 100% 76%
+    }
+
+    100% {
+        background-position: 0% 25%
+    }
+}
+
+/* Blockquote header */
+.blockquote h1 {
+    position: relative;
+    background-color: #191A1B;
+    color: #FFFFFF;
+    font-size: 40px;
+    text-align: center;
+    font-weight: normal;
+    line-height: 1;
+    margin: 0;
+    padding: 30px 30px 5px 30px;
+}
+
+/* increase header size after 600px */
+@media all and (min-width: 600px) {
+    .blockquote h1 {
+        font-size: 60px;
+    }
+}
+
+/* Blockquote subheader */
+.blockquote h4 {
+    position: relative;
+    color: #FF058A;
+    background-color: #191A1B;
+    text-transform: uppercase;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: normal;
+    line-height: 1;
+    letter-spacing: 5px;
+    margin: -5px 0 0 0;
+    padding: 20px 20px 5em 20px;
+}
