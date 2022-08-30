@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Development quotes for you</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="blockquote-wrapper">
+            <div class="blockquote">
+                <h1 v-on:click="move(1)">{{ item[0] }}</h1>
+                <h4 v-on:click="move(-1)">{{ item[1] }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var storage_key = "development-key-v1";
+        var last_index = "development-index-v1";
+        var qstor = {
+            fetch: function () {
+                var quotas = JSON.parse(localStorage.getItem(storage_key) || "[]");
+                quotas.forEach(function (quota, index) {
+                    quota.id = index;
+                });
+                qstor.uid = quotas.length;
+                return quotas;
+            },
+            save: function (quotas) {
+                localStorage.setItem(storage_key, JSON.stringify(quotas));
+            },
+            saveIndex: function (index) {
+                localStorage.setItem(last_index, index);
+            },
+            fetchIndex: function () {
+                return localStorage.getItem(last_index) * 1;
+            }
+        };
+
+        var data = {
+            index: qstor.fetchIndex(),
+            items: qstor.fetch(),
+            item: {},
+            polling: null
+        }
+
+        var vm = new Vue({
+            el: '#app',
+            data: data,
+            methods: {
+                changeQuote() {
+                    this.polling = setInterval(() => {
+                        this.move(1);
+                    }, 900000);
+                },
+                move(num) {
+                    if (this.index >= this.items.length) {
+                        this.index = 0;
+                    }
+                    this.index += num;
+
+                    if (this.index < 0) {
+                        this.index = this.items.length - 1;
+                    }
+
+                    this.item = this.items[this.index]
+                    qstor.saveIndex(this.index);
+                }
+            },
+            created() {
+                this.changeQuote();
+                qstor.saveIndex(this.index);
+            },
+
+            mounted() {
+                if (!this.items.length) {
+                    axios.get(atob('aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9UaW11ci1JcmR5bmVldi9hNDgxODE2NzU1MThkZGFjOTBiMWFlNDk1ZTljZTgzNC9yYXcvZGIwMDZlMWQ5YjQyMDZiOTA2OTNjZWU4NTJhODRjZmQzZTFhOGY1ZC9kZXZlbG9wbWVudC5qc29u'))
+                        .then(response => (this.items = response.data))
+                        .finally(() => (qstor.save(this.items), this.move(1)));
+                } else {
+                    this.item = this.items[this.index];
+                }
+            },
+            beforeDestroy() {
+                clearInterval(this.polling);
+            }
+        })
+    </script>
+</body>
+    
+</html>
